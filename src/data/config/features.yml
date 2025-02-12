@@ -1,0 +1,29 @@
+temporal_feature : fecha
+target_feature : fraude
+
+fix_type_map :
+  datetime[64] : 
+    - fecha
+
+fix_missing_map:
+  d : -2
+  g : NULO
+  o : NULO
+  q : -1
+
+fix_missing_numeric_features : 
+  - b
+  - c
+  - f
+  - l
+  - m
+
+hard_remove_features :
+  - c
+  - p
+  - q
+  - fecha
+  - i
+  - score
+  - fraude
+  - ymd
