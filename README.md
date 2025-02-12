@@ -146,17 +146,25 @@ As variáveis selecionadas serão aquelas que se mantiverem acima da primeira al
 
 Essa etapa pode ser executada via notebook ou script.  
 
+[8-Feature-Selection.ipynb](notebooks/8-Feature-Selection.ipynb)
 
-### 9.Hupertunning
+```bash
+python src/features/feature_selection.py --dataset_prefix=fraud_dataset_v2
+```
+
+### 9.Encoding
 
 
-### 10.Treinamento
+### 10.Hupertunning
 
 
-### 11.Avaliação
+### 11.Treinamento
 
 
-### 12.Análise de Erro
+### 12.Avaliação
+
+
+### 13.Análise de Erro
 
 
 ## Project Organization

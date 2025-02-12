@@ -1,0 +1,40 @@
+hard_remove:
+- c
+- p
+- q
+- fecha
+- i
+- score
+- fraude
+- ymd
+reject:
+- day_of_week
+- ___random_con_2___
+- e
+- hour_of_day
+- g
+- ___random_cat_1___
+- b
+- qty_cat_last7d
+- ___random_con_1___
+- vl_cat_last7d
+- monto
+- j
+- period_of_day
+- r
+- k
+- ___random_cat_2___
+support:
+- o
+- f
+- n
+- l
+- a
+- m
+- s
+- br_qty_cat_last7d
+- d
+- br_vl_cat_last7d
+- qty_fraud_cat_last7d
+- h
+- vl_fraud_cat_last7d
