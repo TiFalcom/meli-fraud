@@ -24,7 +24,7 @@ def main(config_file, dataset_name, ymd_train, ymd_test):
     target_column = config_features['target_feature']
 
     logger.info(f'Loading {dataset_name} dataset.')
-    df = pd.read_csv(os.path.join('data', 'raw', f'{dataset_name}.csv'), index_col=0)
+    df = pd.read_csv(os.path.join('data', 'raw', f'{dataset_name}.csv'), index_col=0).reset_index(drop=True)
     logger.info(f'Shape {dataset_name}: {df.shape}')
 
     df_train = df[
@@ -38,7 +38,7 @@ def main(config_file, dataset_name, ymd_train, ymd_test):
         (df[temporal_feature].astype('datetime64[s]') >= ymd_test)
     ].index
 
-    logger.info(f'Saving train dataset. Shape: {df.iloc[index_train].shape}')
+    logger.info(f'Saving train dataset. Shape: {df_train.iloc[index_train].shape}')
     df_train.iloc[index_train].to_parquet(
         os.path.join('data', 'raw', f'{dataset_name}_train.parquet.gzip'),
         compression='gzip',
@@ -54,7 +54,7 @@ def main(config_file, dataset_name, ymd_train, ymd_test):
     )
     logger.info('Success!')
 
-    logger.info(f'Saving valid dataset. Shape: {df.iloc[index_valid].shape}')
+    logger.info(f'Saving valid dataset. Shape: {df_train.iloc[index_valid].shape}')
     df_train.iloc[index_valid].to_parquet(
         os.path.join('data', 'raw', f'{dataset_name}_valid.parquet.gzip'),
         compression='gzip',

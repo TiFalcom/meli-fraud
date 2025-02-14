@@ -37,13 +37,19 @@ Last, but not least: have fun :)
 
 ## Introdução
 Para resolução do case utilizarei o framework [cookiecutter-data-science](https://cookiecutter-data-science.drivendata.org/) com algumas adaptações. O framework tem como objetivo facilitar o desenvolvimento separando as etapas de treinamento do modelo em scripts e notebooks garantindo replicabilidade e fácil experimentação.  
-Ao final do desenvolvimento vou reunir os resultados em um único notebook, para facilitar a entrega.
+Ao final do desenvolvimento vou reunir os resultados em um único notebook [Summary.ipynb](notebooks/Summary.ipynb), para facilitar a entrega, mas o desenvolvimento foi feito todo através de scripts e alguns notebooks.  
 
 ## 1.Replicabilidade
 Para garantir a replicabilidade dos experimentos, crie um ambiente virtual python idêntico ao utilizado no projeto.
 
 ```bash
+export PYTHONPATH=$(pwd)
 pip install -r requirements.txt
+```
+
+Para replicar o modelo execute o código abaixo:  
+```bash
+make train
 ```
 
 ## 2.Avaliação do Baseline
@@ -126,7 +132,7 @@ python src/features/create_feature_stores.py --dataset_prefix=fraud_dataset_v2
 E para enriquecer as variáveis nas tabelas:
 
 ```bash
-python python src/features/enrich_feature_stores.py --dataset_prefix=fraud_dataset_v2
+python src/features/enrich_feature_stores.py --dataset_prefix=fraud_dataset_v2
 ```
 
 ### 8.Feature Selection
@@ -196,15 +202,30 @@ Essa etapa pode ser executada via notebook ou script.
 python src/model/train.py --dataset_prefix=fraud_dataset_v2
 ```
 
-
 ### 12.Avaliação do Modelo
+Após o treinamento do modelo vamos avaliar e comparar com o modelo já existente.  
 
+Essa etapa é totalmente realizada via notebook.  
+
+[12-Evaluate.ipynb](notebooks/12-Evaluate.ipynb)
 
 ### 13.Usabilidade
+Por fim, vamos ajudar o time de negócio a tomar a melhor decisão com o score construído.  
+Vamos então testar 2 tipos de solução:  
+- Com o novo score.  
+- TODO: Com os dois scores.  
+
+Para isso vamos implementar a função de ROI, conforme informada nas instruções e tentar maximizar ela, nesse caso vamos utilizar força bruta, pois temos poucos scores e observações.  
+
+WIP: Realizar essa análise porêm realizando propostar diferentes para categorias de produtos diferentes, ou então faixas de valores diferentes, visto que o apetite do time de negócio pode ser diferente para cada um.  
+
+Essa etapa é totalmente realizada via notebook.  
+
+[13-Use.ipynb](notebooks/13-Use.ipynb)
 
 
 ### 14.Análise de Erro
-WIP: Fazer uma análise de erro olhando alguns casos de falso positivo e de falso negativo tentando entender possíveis alterações em variáveis ou na modelagem que podem ajudar a melhorar a performance.  
+TODO: Fazer uma análise de erro olhando alguns casos de falso positivo e de falso negativo tentando entender possíveis alterações em variáveis ou na modelagem que podem ajudar a melhorar a performance.  
 
 
 ## Project Organization

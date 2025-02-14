@@ -1,5 +1,5 @@
-learning_rate: 0.031197196014482127
-max_depth: 8
-min_child_samples: 100
-n_estimators: 280
-num_leaves: 14
+learning_rate: 0.08303666629012729
+max_depth: 4
+min_child_samples: 83
+n_estimators: 460
+num_leaves: 45
