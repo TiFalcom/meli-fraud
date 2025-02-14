@@ -36,7 +36,7 @@ Last, but not least: have fun :)
 # Resolução
 
 ## Introdução
-Para resolução do case utilizarei o framework [cookiecutter-datas-science](https://cookiecutter-data-science.drivendata.org/) com algumas adaptações. O framework tem como objetivo facilitar o desenvolvimento separando as etapas de treinamento do modelo em scripts e notebooks garantindo replicabilidade e fácil experimentação.  
+Para resolução do case utilizarei o framework [cookiecutter-data-science](https://cookiecutter-data-science.drivendata.org/) com algumas adaptações. O framework tem como objetivo facilitar o desenvolvimento separando as etapas de treinamento do modelo em scripts e notebooks garantindo replicabilidade e fácil experimentação.  
 Ao final do desenvolvimento vou reunir os resultados em um único notebook, para facilitar a entrega.
 
 ## 1.Replicabilidade
@@ -47,7 +47,7 @@ pip install -r requirements.txt
 ```
 
 ## 2.Avaliação do Baseline
-Começar avaliando o modelo já existente na tabela.
+Começar avaliando o modelo já existente.
 
 [2-Analyse-Baseline.ipynb](notebooks/2-Analyse-Baseline.ipynb)
 
@@ -110,7 +110,7 @@ Essa etapa é totalmente executada via notebook.
 ### 7.Feature Store
 Após a análise exploratória tive algumas ideias para criação de novas variáveis, então nessa etapa serão criadas variáveis que não se encontram no dataset/payload e que podem ser construídas a partir de estruturas de feature stores.  
 
-Nessa etapa será criado 1 *feature groups*:  
+Nessa etapa será criado 1 *feature group*:  
 - Perfil Categoria Produto últimos 7 dias
 
 A ideia desse feature group é trazer informações históricas dos produtos condensados.  
@@ -134,13 +134,13 @@ Mesmo com um problema com poucas variáveis vamos realizar um método de seleç�
 Vamos utilizar como forma de seleção o algoritmo RandomForest com os parametros a seguir:
 - `n_estimators=100` : Quantidade razoaável de árvores  
 - `criterion='gini'` : Eficiência computacional vs entropia  
-- `max_depth=5` : Quantidade razoável de nós  
+- `max_depth=5` : Quantidade razoável de profundidade de nós  
 - `max_features='sqrt` : Oportunidade de interação de diferentes features  
 - `class_weight='balanced'` : Problema desbalanceado, dando maior peso para classes minoritárias  
 A escolha do algoritmo se deve ao fato de ser uma forma simples de avaliar a importância de cada uma das variáveis, avaliando um método de árvore (mesmo que será utilizado no algoritmo final) e selecioanando as variáveis, dando oportunidade para elas aparecerem em diferentes árvores interagindo com diferentes variáveis.  
 
 No meio das variáveis serão colocadas 4 variáveis aleatórias, 2 categóricas (baixa cardinalidade) e 2 continuas.  
-As variáveis selecionadas serão aquelas que se mantiverem acima da primeira aleatória no ranking de importância por `ganho de informação`.  
+As variáveis selecionadas serão aquelas que se mantiverem acima da primeira aleatória no ranking de importância por `ganho de informação` ou que acumularem 95% de importância.  
 
 (método parecido com Boruta, porém computacionalmente mais rápido)
 
@@ -153,18 +153,58 @@ python src/features/feature_selection.py --dataset_prefix=fraud_dataset_v2
 ```
 
 ### 9.Encoding
+Nessa etapa vamos realizar o encoding das variáveis não numéricas, para conseguir passar os dados pelo modelo. Como vamos utilizar um modelo baseado em árvores, vamos utilizar um ordinal encoder, visto que o modelo consegue capturar não linearidade.  
 
+Além dos encoders vamos criar todos os artefatos binários necessários para montar a pipeline do modelo.    
+
+Essa etapa pode ser executada via notebook ou script.  
+
+[9-Encoding.ipynb](notebooks/9-Encoding.ipynb)
+
+```bash
+python src/features/create_encoders.py --dataset_prefix=fraud_dataset_v2
+```
+
+Para salvar uma tabela intermadiária com o encoding processado execute o passo abaixo:  
+
+```bash
+python src/features/process_encoders.py --dataset_prefix=fraud_dataset_v2
+```
 
 ### 10.Hupertunning
+Trabalhando com um algoritmo de boosting temos diversos parametros que podem ser alterados, mudando a performance do modelo, nesta etapa utilizaremos a biblioteca `optuna` para tunagem dos hiperparametros.  
 
+Essa etapa pode ser executada via notebook ou script.  
+
+[10-Tune.ipynb](notebooks/10-Tune.ipynb)
+
+```bash
+python src/model/tune.py --dataset_prefix=fraud_dataset_v2
+```
 
 ### 11.Treinamento
+Enfim chegamos na etapa de treinamento do modelo, para esse problema vamos utilizar um modelo de boosting. Esse tipo de modelo foi escolhido devido as características encontradas no problema:  
+- Problema desbalanceado, modelos de boosting conseguem se adequar bem a esse tipo de problema devido a classificação errada incorporar um peso entre as iterações.  
+- É um modelo robusto e de fácil treinamento.  
+- Por mais que seja um modelo "caixa-preta", é possível trazer explicabilidade através de bibliotecas como shap e lime.  
+
+Essa etapa pode ser executada via notebook ou script.  
+
+[11-Train.ipynb](notebooks/11-Train.ipynb)
+
+```bash
+python src/model/train.py --dataset_prefix=fraud_dataset_v2
+```
 
 
-### 12.Avaliação
+### 12.Avaliação do Modelo
 
 
-### 13.Análise de Erro
+### 13.Usabilidade
+
+
+### 14.Análise de Erro
+WIP: Fazer uma análise de erro olhando alguns casos de falso positivo e de falso negativo tentando entender possíveis alterações em variáveis ou na modelagem que podem ajudar a melhorar a performance.  
 
 
 ## Project Organization
@@ -185,7 +225,7 @@ python src/features/feature_selection.py --dataset_prefix=fraud_dataset_v2
 │
 ├── docs               <- A default mkdocs project; see www.mkdocs.org for details
 │
-├── models             <- Trained and serialized models, model predictions, or model summaries
+├── model              <- Trained and serialized models, model predictions, or model summaries
 │
 ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
 │                         the creator's initials, and a short `-` delimited description, e.g.

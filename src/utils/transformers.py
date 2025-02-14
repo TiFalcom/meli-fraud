@@ -117,3 +117,17 @@ class FeatureEngineering:
     def fit_transform(self, X, y=None):
         self.fit(X, y)
         return self.transform(X)
+    
+
+class Selector:
+    def __init__(self, features):
+        self.features = features
+
+    def __repr__(self):
+        return f'Features: {self.features}'
+    
+    def fit(self, X=None, y=None):
+        return self
+    
+    def transform(self, X=None):
+        return X[self.features]

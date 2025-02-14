@@ -10,7 +10,7 @@ from feature_engine.encoding import OrdinalEncoder
 
 @click.command()
 @click.option('--config_file', default='features', type=str, help='Features configuration file on src/data/config.')
-@click.option('--dataset_prefix', default=None, type=str, help='Data set name on data/processed.')
+@click.option('--dataset_prefix', default=None, type=str, help='Data set name on data/enrich.')
 @click.option('--fs_file_prefix', default='rf', type=str, help='Feature Selection file prefix, to save output features.')
 def main(config_file, dataset_prefix, fs_file_prefix):
 

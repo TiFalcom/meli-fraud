@@ -1,10 +1,39 @@
 import numpy as np
-from sklearn.metrics import confusion_matrix, roc_curve
+from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score
 import matplotlib.pyplot as plt
 from scipy.stats import kstest
 import seaborn as sns
 import pandas as pd
+import lightgbm as lgbm
 
+def objective(trial, X_train, y_train, eval_set):
+    # Definição dos hiperparâmetros a serem ajustados
+    params = {
+        'verbose' : 0,
+        'random_state' : 777,
+        'early_stopping_rounds' : 5,
+        'n_jobs' : -1,
+        'objective': 'binary',
+        'boosting_type': 'gbdt',
+        'n_estimators': trial.suggest_int('n_estimators', 100, 500, step=10),
+        'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.3, log=True),
+        'num_leaves': trial.suggest_int('num_leaves', 10, 150),
+        'max_depth': trial.suggest_int('max_depth', 3, 10),
+        'min_child_samples': trial.suggest_int('min_child_samples', 5, 100)
+    }
+
+    model = lgbm.LGBMClassifier(**params)
+    model.fit(X_train, y_train, eval_set=eval_set, 
+              eval_metric='auc')
+
+    y_pred_valid = model.predict_proba(eval_set[0][0])[:, 1]
+    y_pred_train = model.predict_proba(X_train)[:, 1]
+
+    # Overfitting penalty
+    roc_auc_valid = roc_auc_score(eval_set[0][1], y_pred_valid, max_fpr=0.01)
+    penalty = abs(roc_auc_valid - roc_auc_score(y_train, y_pred_train, max_fpr=0.01))
+
+    return roc_auc_valid - penalty
 
 def apply_encoders(X, lst_encoders):
     X_tmp = X.reset_index(drop=True)
