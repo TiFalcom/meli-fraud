@@ -35,6 +35,8 @@ Last, but not least: have fun :)
 
 # Resolução
 
+**Diego Araujo Giovanini - diego.giovanini4@gmail.com**
+
 ## Introdução
 Para resolução do case utilizarei o framework [cookiecutter-data-science](https://cookiecutter-data-science.drivendata.org/) com algumas adaptações. O framework tem como objetivo facilitar o desenvolvimento separando as etapas de treinamento do modelo em scripts e notebooks garantindo replicabilidade e fácil experimentação.  
 Ao final do desenvolvimento vou reunir os resultados em um único notebook [Summary.ipynb](notebooks/Summary.ipynb), para facilitar a entrega, mas o desenvolvimento foi feito todo através de scripts e alguns notebooks.  
