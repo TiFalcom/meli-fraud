@@ -69,7 +69,7 @@ Para teste será utilizado 100% do período [20200408, 20200421].
 
 Essa etapa pode ser executada via notebook ou script.  
 
-[3-Split-Date.ipynb](notebooks/3-Split-Data.ipynb)
+[3-Split-Data.ipynb](notebooks/3-Split-Data.ipynb)
 
 ```bash
 python src/data/split_data.py --dataset_name=fraud_dataset_v2 --ymd_train=20200308 --ymd_test=20200408
@@ -88,7 +88,7 @@ Colunas com até 70 valores únicos foram definidas como colunas do tipo categó
 
 Essa etapa pode ser executada via notebook ou script.  
 
-[4-Data-Basic-Process.ipynb](notebooks/4-Data-Prep.ipynb)
+[4-Data-Basic-Process.ipynb](notebooks/4-Data-Basic-Process.ipynb)
 
 ```bash
 python src/data/basic_process.py --dataset_name=fraud_dataset_v2
@@ -152,7 +152,7 @@ As variáveis selecionadas serão aquelas que se mantiverem acima da primeira al
 
 Essa etapa pode ser executada via notebook ou script.  
 
-[8-Feature-Selection.ipynb](notebooks/8-Feature-Selection.ipynb)
+[8-Feature-Selection.ipynb](notebooks/8.Feature-Selection.ipynb)
 
 ```bash
 python src/features/feature_selection.py --dataset_prefix=fraud_dataset_v2
